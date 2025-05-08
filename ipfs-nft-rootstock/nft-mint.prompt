@@ -1,0 +1,74 @@
+**Multi-Chain Prompt for IPFS-Powered NFT Minting on Rootstock**
+
+**Objective**: Create an NFT by uploading an image to IPFS, generating metadata, uploading metadata to IPFS, and minting the NFT on Rootstock testnet.
+
+**Chain**: Rootstock (Testnet)
+
+**Tools**:
+- Node.js with Hardhat for contract deployment
+- Pinata SDK for IPFS uploads
+- Ethers.js for blockchain interaction
+- Environment: .env file with PINATA_API_KEY, PINATA_API_SECRET, ROOTSTOCK_TESTNET_RPC, PRIVATE_KEY
+
+**Steps**:
+
+1. **Verify Environment**:
+   - Check .env file exists with required keys.
+   - Ensure Hardhat is configured for Rootstock testnet in hardhat.config.js.
+   - Confirm MetaMask wallet has testnet RBTC.
+
+2. **Image Upload to IPFS**:
+   - Prompt user for image path (e.g., ./images/nft-image.png).
+   - Use Pinata SDK to upload the image to IPFS.
+   - Retrieve and store the image CID (e.g., ipfs://<CID>).
+
+3. **Generate and Upload Metadata**:
+   - Create a JSON metadata object:
+     ```json
+     {
+       "name": "My Rootstock NFT",
+       "description": "An NFT minted on Rootstock using IPFS",
+       "image": "ipfs://<image_CID>",
+       "attributes": []
+     }
+     ```
+   - Upload metadata to IPFS using Pinata SDK.
+   - Retrieve and store the metadata CID (e.g., ipfs://<metadata_CID>).
+
+4. **Deploy Smart Contract**:
+   - Use Hardhat to compile and deploy the MyNFT contract (contracts/NFT.sol).
+   - Log the contract address.
+
+5. **Mint NFT**:
+   - Call the mintNFT function on the deployed contract.
+   - Pass the user’s wallet address and metadata CID as tokenURI.
+   - Log the transaction hash and token ID.
+
+**Execution**:
+- Create a script `scripts/mint-nft.js` to handle IPFS uploads and contract interactions.
+- Run the script using `npx hardhat run scripts/mint-nft.js --network rootstockTestnet`.
+
+**Output**:
+- Image CID
+- Metadata CID
+- Contract address
+- Transaction hash
+- Token ID
+
+**Error Handling**:
+- Validate image file existence before upload.
+- Handle Pinata API errors (e.g., invalid keys).
+- Check for sufficient RBTC balance before deployment/minting.
+
+**Prompt for User**:
+- "Please provide the path to your image file (e.g., ./images/nft-image.png):"
+- After completion: "NFT minted successfully! Details: {imageCID, metadataCID, contractAddress, txHash, tokenId}"
+
+**Constraints**:
+- Complete within 2 hours.
+- Use Rootstock testnet.
+- Ensure metadata follows ERC-721 standard.
+- Store image and metadata on IPFS via Pinata.
+
+**Start Execution**:
+Generate the script and execute the process now.

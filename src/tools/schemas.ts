@@ -1,4 +1,6 @@
 import { z } from "zod";
+import readline from 'readline';
+import { uploadImageToIPFS } from '../handlers/index.js'; // You will create this function
 
 export const CallContractSchema = z.object({
   contractAddress: z.string().describe("The address of the contract to call"),
@@ -64,4 +66,21 @@ export const DeployPropertyYieldVaultSchema = z.object({
   propertyId: z
     .string()
     .describe("The ID of the specific property NFT this vault is linked to"),
+});
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('Enter the file path to upload to IPFS: ', async (filePath) => {
+  rl.question('Enter a file name (optional): ', async (fileName) => {
+    try {
+      const result = await uploadImageToIPFS({ filePath, fileName });
+      console.log('Image uploaded! IPFS CID:', result.imageCID);
+    } catch (e) {
+      console.error('Upload failed:', e.message);
+    }
+    rl.close();
+  });
 });
